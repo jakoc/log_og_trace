@@ -1,4 +1,6 @@
+using API.Monitoring;
 using Messages;
+using Serilog;
 
 namespace API.Services;
 
@@ -16,9 +18,19 @@ public class LanguageService
     
     public LanguageResponse GetLanguages()
     {
-        return new LanguageResponse
+        using (var activity = MonitorService.ActivitySource.StartActivity("LanguageService.GetLanguages"))
         {
-            Languages = GreetingService.Instance.GetLanguages()
-        };
+            MonitorService.Log.Information("Fetching list of supported languages from GreetingService");
+
+            var languages = GreetingService.Instance.GetLanguages(); // kald én gang
+
+            activity?.SetTag("language.count", languages.Length);
+            MonitorService.Log.Debug("Supported languages: {@Languages}", languages);
+
+            return new LanguageResponse
+            {
+                Languages = languages
+            };
+        }
     }
 }

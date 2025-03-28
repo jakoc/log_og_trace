@@ -17,7 +17,7 @@ services:
       context: Web
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8012:80"
     environment:
       - API_URL=http://api:80
       
@@ -26,6 +26,8 @@ services:
     ports:
       - "5341:5341"
       - "5342:80"
+    volumes:
+      - rps_seq_data:/data
     environment:
       - ACCEPT_EULA=Y
 
@@ -33,3 +35,6 @@ services:
     image: openzipkin/zipkin
     ports:
       - "9411:9411"
+
+volumes:
+  rps_seq_data:

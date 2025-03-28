@@ -2,6 +2,8 @@ using API.Models;
 using API.Services;
 using Messages;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace API.Controllers;
 
@@ -9,6 +11,7 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class TextController : ControllerBase
 {
+    
     [HttpGet]
     public IActionResult Get(string languageCode)
     {
